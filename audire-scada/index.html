@@ -621,36 +621,41 @@
                 validará los datos fiscales y la viabilidad del proceso químico antes de agendar la sesión técnica
                 presencial.</p>
 
-            <form
-                onsubmit="event.preventDefault(); alert('Solicitud enviada a revisión técnica. Nuestro equipo analizará los datos de su empresa.');">
-                <div class="form-group">
-                    <label for="empresa">Nombre de la Empresa y CIF</label>
-                    <input type="text" id="empresa" required placeholder="Ej: Nantor Resinas S.L.U. - B26954453">
-                </div>
-                <div class="form-group">
-                    <span id="budget-label"
-                        style="display:block; margin-bottom:8px; font-weight:600; font-size:0.9rem;">Presupuesto
-                        Estimado de Inversión</span>
-                    <div class="radio-group" role="radiogroup" aria-labelledby="budget-label">
-                        <label class="radio-option">
-                            <input type="radio" name="budget" value="low"> Menos de 150.000 € (Sujeto a rechazo
-                            automático)
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="budget" value="mid" checked> Entre 150.000 € y 500.000 €
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="budget" value="high"> Más de 500.000 €
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="proceso-quimico">Descripción del Proceso Químico o Resina a Fabricar</label>
-                    <textarea id="proceso-quimico" rows="4" required
-                        placeholder="Detalle el tipo de reacción, número de reactores deseados y necesidades de automatización..."></textarea>
-                </div>
-                <button type="submit" class="btn">Enviar Proyecto a Revisión Técnica</button>
-            </form>
+            <form id="contacto-form" method="POST" action="https://formspree.io/f/xdawdbne">
+    <input type="hidden" name="_subject" value="Nueva Solicitud de Evaluación - Audire SCADA">
+    
+    <div class="form-group">
+        <label for="empresa">Nombre de la Empresa y CIF</label>
+        <input type="text" id="empresa" name="empresa_cif" required placeholder="Ej: Nantor Resinas S.L.U. - B26954453">
+    </div>
+
+    <div class="form-group">
+        <span id="budget-label" style="display:block; margin-bottom:8px; font-weight:600; font-size:0.9rem;">Presupuesto Estimado de Inversión</span>
+        <div class="radio-group" role="radiogroup" aria-labelledby="budget-label">
+            <label class="radio-option">
+                <input type="radio" name="presupuesto_estimado" value="Menos de 150k (Sujeto a rechazo)"> Menos de 150.000 € (Sujeto a rechazo automático)
+            </label>
+            <label class="radio-option">
+                <input type="radio" name="presupuesto_estimado" value="Entre 150k y 500k" checked> Entre 150.000 € y 500.000 €
+            </label>
+            <label class="radio-option">
+                <input type="radio" name="presupuesto_estimado" value="Más de 500k"> Más de 500.000 €
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="proceso-quimico">Resumen preliminar del proyecto</label>
+        <textarea id="proceso-quimico" name="resumen_proyecto" rows="5" required placeholder="Describa detalladamente:&#10;1. Qué quiere conseguir (objetivos y volumen).&#10;2. Qué tiene actualmente (maquinaria, espacio).&#10;3. En qué punto exacto se encuentra..."></textarea>
+    </div>
+
+    <!--<button type="submit" class="btn">Enviar Proyecto a Revisión Técnica</button>-->
+    <!-- Botón Desactivado por Capacidad Completa -->
+    <button type="submit" class="btn" disabled style="background-color: #2c3e50; color: #94a3b8; cursor: not-allowed; border: 1px solid var(--surface-accent); transform: none;">
+        No disponible: Todos los proyectos 2026-2027 comprometidos
+    </button>
+</form>
+</form>
         </section>
     </main>
 
