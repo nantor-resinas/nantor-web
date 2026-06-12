@@ -70,8 +70,49 @@
         .filter-banner h3 { color: var(--danger-color); font-size: 1.6rem; margin-bottom: 15px; font-weight: 700; }
         .badge-danger { display: inline-block; background-color: rgba(255, 51, 51, 0.1); color: var(--danger-color); padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; }
         footer { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--surface-accent); margin-top: 80px; }
-        @media (max-width: 968px) { .two-columns, .two-columns.reverse { display: flex; flex-direction: column; } h1 { font-size: 2.3rem; } nav { display: none; } }
-    </style>
+        @media (max-width: 968px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 12px;
+                padding: 15px;
+            }
+
+            nav {
+                display: flex !important; /* Forzamos a que aparezca */
+                justify-content: center;
+                width: 100%;
+                gap: 15px;
+            }
+
+            nav a {
+                margin-left: 0; /* Quitamos el margen lateral antiguo */
+                font-size: 0.85rem; /* Un pelo más pequeña para que quepa en cualquier pantalla */
+                background-color: var(--surface-accent);
+                padding: 6px 12px;
+                border-radius: 4px;
+                border: 1px solid rgba(255,255,255,0.05);
+            }
+
+            .two-columns,
+            .two-columns.reverse {
+                display: flex;
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 2.3rem;
+            }
+
+            .step {
+                flex-direction: column;
+            }
+
+            .step-num {
+                padding: 20px;
+                border-right: none;
+                border-bottom: 1px solid var(--surface-accent);
+            }
+        }  </style>
 </head>
 
 <body>

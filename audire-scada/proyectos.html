@@ -389,6 +389,27 @@
         }
 
         @media (max-width: 968px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 12px;
+                padding: 15px;
+            }
+
+            nav {
+                display: flex !important; /* Forzamos a que aparezca */
+                justify-content: center;
+                width: 100%;
+                gap: 15px;
+            }
+
+            nav a {
+                margin-left: 0; /* Quitamos el margen lateral antiguo */
+                font-size: 0.85rem; /* Un pelo más pequeña para que quepa en cualquier pantalla */
+                background-color: var(--surface-accent);
+                padding: 6px 12px;
+                border-radius: 4px;
+                border: 1px solid rgba(255,255,255,0.05);
+            }
 
             .two-columns,
             .two-columns.reverse {
@@ -408,10 +429,6 @@
                 padding: 20px;
                 border-right: none;
                 border-bottom: 1px solid var(--surface-accent);
-            }
-
-            nav {
-                display: none;
             }
         }
     </style>
