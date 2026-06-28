@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="AUDIRE SCADA — Software de control industrial para plantas de química fina. Control de reactores por fases, recetas maestras, trazabilidad total y análisis de batch.">
+  <meta name="keywords"
+    content="Audire SCADA, software SCADA, control industrial, reactores, recetas maestras, Modbus TCP, batch, química fina, automatización">
+  <meta name="robots" content="index, follow">
+  <title>AUDIRE SCADA · Software</title>
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="apple-touch-icon" href="images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #05080c;
+      --s1: #0b1018;
+      --s2: #0f1923;
+      --s3: #1a2535;
+      --border: #1e2d3d;
+      --amber: #e8a020;
+      --amber2: #b87a10;
+      --text: #c8d8e8;
+      --muted: #5a7080;
+      --dim: #2a3a4a;
+      --red: #c0392b;
+      --green: #27ae60;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Space Grotesk', sans-serif;
+      --body: 'Inter', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box }
+    html { scroll-behavior: smooth }
+    body { background: var(--bg); color: var(--text); font-family: var(--body); line-height: 1.6; overflow-x: hidden }
+
+    /* ── NAV ─────────────────────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 48px; height: 58px;
+      background: rgba(5,8,12,.92); border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      font-family: var(--sans); font-weight: 700; font-size: 1.05rem;
+      letter-spacing: .5px; color: var(--text); text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-logo-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--amber); animation: pulse 2s infinite
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(232,160,32,.4) }
+      50%      { opacity:.7; box-shadow:0 0 0 6px rgba(232,160,32,0) }
+    }
+    .nav-links { display: flex; gap: 8px }
+    .nav-links a {
+      font-family: var(--sans); font-size: .8rem; font-weight: 500;
+      color: var(--muted); text-decoration: none; padding: 6px 14px;
+      border-radius: 4px; transition: color .2s, background .2s;
+    }
+    .nav-links a:hover { color: var(--amber); background: rgba(232,160,32,.07) }
+    .nav-links a.active { color: var(--amber) }
+    .nav-cta {
+      background: var(--amber); color: #05080c; font-family: var(--sans);
+      font-size: .8rem; font-weight: 700; padding: 7px 18px; border-radius: 4px;
+      text-decoration: none; transition: background .2s;
+    }
+    .nav-cta:hover { background: var(--amber2) }
+
+    /* ── PAGE HERO ───────────────────────────────────────────────────────────── */
+    .page-hero {
+      padding: 130px 48px 70px;
+      position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 70% at 50% 0%, rgba(232,160,32,.05) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .page-hero-inner { max-width: 1200px; margin: 0 auto }
+    .hero-label {
+      font-family: var(--mono); font-size: .7rem; color: var(--amber);
+      letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .hero-label::before { content:''; width:24px; height:1px; background:var(--amber) }
+    .page-hero h1 {
+      font-family: var(--sans); font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.1; letter-spacing: -.5px;
+      color: #e8eef4; margin-bottom: 22px; max-width: 800px;
+    }
+    .page-hero h1 em { color: var(--amber); font-style: normal }
+    .page-hero-sub {
+      font-size: 1rem; color: var(--muted); max-width: 620px;
+      line-height: 1.75; margin-bottom: 36px;
+    }
+    .hero-pills { display: flex; gap: 10px; flex-wrap: wrap }
+    .pill {
+      font-family: var(--mono); font-size: .65rem; letter-spacing: 1px;
+      color: var(--amber); border: 1px solid rgba(232,160,32,.3);
+      background: rgba(232,160,32,.06); padding: 5px 12px; border-radius: 3px;
+    }
+
+    /* ── SECTION BASE ────────────────────────────────────────────────────────── */
+    .section { padding: 80px 48px; max-width: 1200px; margin: 0 auto }
+    .eyebrow {
+      font-family: var(--mono); font-size: .68rem; color: var(--amber);
+      letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 14px;
+    }
+    .section-h {
+      font-family: var(--sans); font-weight: 700;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      color: #e8eef4; letter-spacing: -.3px; margin-bottom: 16px;
+    }
+    .section-p {
+      color: var(--muted); font-size: .95rem; max-width: 600px;
+      line-height: 1.75; margin-bottom: 48px;
+    }
+    hr.rule { border: none; border-top: 1px solid var(--border); margin: 0 }
+
+    /* ── WHAT IS AUDIRE — intro grid ─────────────────────────────────────────── */
+    .intro-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+      align-items: start; margin-bottom: 64px;
+    }
+    .intro-body { font-size: .95rem; color: var(--muted); line-height: 1.8 }
+    .intro-body p + p { margin-top: 16px }
+    .intro-body strong { color: var(--text) }
+    .intro-quote {
+      border-left: 2px solid var(--amber); padding: 20px 24px;
+      background: var(--s1); border-radius: 0 6px 6px 0;
+      font-family: var(--sans); font-size: 1.1rem; font-weight: 600;
+      color: #e8eef4; line-height: 1.5;
+    }
+    .intro-quote span {
+      display: block; margin-top: 12px; font-family: var(--mono);
+      font-size: .65rem; color: var(--amber); letter-spacing: 1.5px;
+    }
+
+    /* ── FEATURE PILLARS ─────────────────────────────────────────────────────── */
+    .pillars {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+      border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+      margin-bottom: 64px;
+    }
+    .pillar {
+      background: var(--s1); padding: 28px 24px;
+      border-right: 1px solid var(--border);
+      transition: background .2s;
+    }
+    .pillar:last-child { border-right: none }
+    .pillar:hover { background: var(--s2) }
+    .pillar-icon {
+      font-size: 1.4rem; margin-bottom: 14px; display: block
+    }
+    .pillar-h {
+      font-family: var(--sans); font-weight: 700; font-size: .95rem;
+      color: #e8eef4; margin-bottom: 10px;
+    }
+    .pillar-p { font-size: .85rem; color: var(--muted); line-height: 1.7 }
+
+    /* ── EVIDENCIA BLOCKS (image + text) ─────────────────────────────────────── */
+    .ev-block {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+      align-items: center; padding: 64px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .ev-block.rev { direction: rtl }
+    .ev-block.rev .ev-text { direction: ltr }
+    .ev-block:last-child { border-bottom: none }
+    .ev-screen {
+      position: relative; border-radius: 6px; overflow: hidden;
+      border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    }
+    .ev-screen img { width:100%; display:block; filter:brightness(.92) contrast(1.05) }
+    .ev-screen::after {
+      content:''; position:absolute; inset:0;
+      background: linear-gradient(135deg, rgba(232,160,32,.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    /* placeholder cuando no hay imagen todavía */
+    .ev-placeholder {
+      width: 100%; aspect-ratio: 16/9;
+      background: var(--s2); border: 1px dashed var(--border);
+      border-radius: 6px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+    }
+    .ev-placeholder-label {
+      font-family: var(--mono); font-size: .65rem; color: var(--dim);
+      letter-spacing: 1.5px; text-align: center;
+    }
+    .ev-placeholder-icon { font-size: 2rem; opacity: .2 }
+    .screen-tag {
+      position: absolute; top: 12px; left: 12px;
+      font-family: var(--mono); font-size: .6rem; color: var(--amber);
+      background: rgba(5,8,12,.85); padding: 4px 10px; border-radius: 3px;
+      border: 1px solid rgba(232,160,32,.25); letter-spacing: 1px;
+    }
+    .ev-tag {
+      font-family: var(--mono); font-size: .68rem; color: var(--amber);
+      letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px;
+    }
+    .ev-h {
+      font-family: var(--sans); font-size: 1.5rem; font-weight: 700;
+      color: #e8eef4; margin-bottom: 14px; line-height: 1.2;
+    }
+    .ev-p { color: var(--muted); font-size: .9rem; line-height: 1.75; margin-bottom: 22px }
+    .ev-list { list-style: none; display: flex; flex-direction: column; gap: 10px }
+    .ev-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: .88rem; color: var(--muted); line-height: 1.5;
+    }
+    .ev-list li::before {
+      content: '›'; color: var(--amber); font-weight: 700;
+      flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* ── VS IGNITION TABLE ───────────────────────────────────────────────────── */
+    .vs-wrap {
+      overflow-x: auto; margin-bottom: 16px;
+    }
+    .vs-table {
+      width: 100%; border-collapse: collapse;
+      font-size: .88rem;
+    }
+    .vs-table th {
+      font-family: var(--sans); font-weight: 700; font-size: .8rem;
+      padding: 14px 18px; text-align: left;
+      border-bottom: 2px solid var(--border);
+    }
+    .vs-table th:nth-child(2) { color: var(--amber) }
+    .vs-table th:nth-child(3) { color: var(--muted) }
+    .vs-table td {
+      padding: 13px 18px; border-bottom: 1px solid var(--border);
+      color: var(--muted); line-height: 1.5; vertical-align: top;
+    }
+    .vs-table tr:last-child td { border-bottom: none }
+    .vs-table tr:hover td { background: rgba(232,160,32,.03) }
+    .vs-table td:first-child { color: var(--text); font-weight: 500 }
+    .tag-win {
+      display: inline-block; font-family: var(--mono); font-size: .6rem;
+      background: rgba(39,174,96,.12); color: #27ae60;
+      padding: 2px 8px; border-radius: 3px; letter-spacing: .5px;
+    }
+    .tag-loss {
+      display: inline-block; font-family: var(--mono); font-size: .6rem;
+      background: rgba(192,57,43,.1); color: #e74c3c;
+      padding: 2px 8px; border-radius: 3px; letter-spacing: .5px;
+    }
+    .vs-note {
+      font-size: .82rem; color: var(--muted); line-height: 1.7;
+      border-left: 2px solid var(--border); padding-left: 16px;
+      margin-top: 24px;
+    }
+
+    /* ── CTA BAND ────────────────────────────────────────────────────────────── */
+    .cta-band {
+      background: var(--s1); border: 1px solid var(--border);
+      border-radius: 6px; padding: 48px 40px;
+      display: flex; justify-content: space-between;
+      align-items: center; gap: 32px; flex-wrap: wrap;
+    }
+    .cta-band-text h3 {
+      font-family: var(--sans); font-weight: 700; font-size: 1.4rem;
+      color: #e8eef4; margin-bottom: 8px;
+    }
+    .cta-band-text p { font-size: .9rem; color: var(--muted); max-width: 480px }
+    .btn-primary {
+      background: var(--amber); color: #05080c; font-family: var(--sans);
+      font-weight: 700; font-size: .85rem; padding: 12px 28px;
+      border-radius: 4px; text-decoration: none; transition: background .2s, transform .15s;
+      white-space: nowrap;
+    }
+    .btn-primary:hover { background: var(--amber2); transform: translateY(-1px) }
+    .btn-ghost {
+      border: 1px solid var(--border); color: var(--text); font-family: var(--sans);
+      font-weight: 500; font-size: .85rem; padding: 12px 24px;
+      border-radius: 4px; text-decoration: none; transition: border-color .2s, color .2s;
+    }
+    .btn-ghost:hover { border-color: var(--amber); color: var(--amber) }
+
+    /* ── FOOTER ──────────────────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border); padding: 32px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--mono); font-size: .65rem; color: var(--muted);
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────────────────────── */
+    @media(max-width:900px) {
+      nav { padding: 0 20px }
+      .page-hero { padding: 100px 20px 50px }
+      .section { padding: 60px 20px }
+      .intro-grid { grid-template-columns: 1fr; gap: 32px }
+      .pillars { grid-template-columns: 1fr 1fr }
+      .pillar { border-right: none; border-bottom: 1px solid var(--border) }
+      .pillar:last-child { border-bottom: none }
+      .ev-block, .ev-block.rev { grid-template-columns: 1fr; direction: ltr; gap: 32px }
+      .cta-band { flex-direction: column; align-items: flex-start }
+      footer { flex-direction: column; gap: 8px; text-align: center; padding: 24px 20px }
+    }
+    @media(max-width:500px) {
+      .pillars { grid-template-columns: 1fr }
+      .hero-pills { flex-direction: column }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      * { animation: none !important; transition: none !important }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-dot"></span>
+      AUDIRE<span style="color:var(--amber)">SCADA</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="software.html" class="active">Software</a>
+      <a href="index.html#plataforma">Plataforma</a>
+      <a href="index.html#proceso">Proceso</a>
+      <a href="index.html#contacto" class="nav-cta">Solicitar Evaluación</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-inner">
+      <div class="hero-label">Software · Control Industrial · Batch</div>
+      <h1>El software que convierte su reactor<br>en una <em>máquina inteligente.</em></h1>
+      <p class="page-hero-sub">AUDIRE SCADA es un sistema de control industrial desarrollado específicamente para la
+        fabricación de productos químicos por lotes. Controla, registra y analiza cada proceso desde el arranque
+        hasta el envasado final — sin depender de software de terceros, sin licencias anuales, sin límites de tags.</p>
+      <div class="hero-pills">
+        <span class="pill">100% SOFTWARE PROPIO</span>
+        <span class="pill">MODBUS TCP · RS485</span>
+        <span class="pill">LICENCIA PERPETUA</span>
+        <span class="pill">SIN LÍMITE DE TAGS</span>
+        <span class="pill">NODE-RED · SQLITE</span>
+        <span class="pill">ACCESO WEB · SIN INSTALAR NADA</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- QUÉ ES AUDIRE SCADA -->
+  <div class="section" id="que-es">
+    <div class="eyebrow">El Producto</div>
+    <h2 class="section-h">Control total del proceso.<br>Sin intermediarios.</h2>
+
+    <div class="intro-grid">
+      <div class="intro-body">
+        <p>
+          En la industria química, cada minuto de proceso mal controlado se traduce en producto fuera de
+          especificación, merma de materia prima y riesgo para el operario.
+          <strong>AUDIRE SCADA elimina ese riesgo</strong> convirtiendo cualquier reactor en una máquina de
+          precisión programable.
+        </p>
+        <p>
+          El operario arranca un lote seleccionando una <strong>Receta Maestra</strong> y pulsando START.
+          El sistema hace el resto: activa el controlador térmico, gestiona las cargas de reactivo desde los pulmones,
+          supervisa cada fase con sus tiempos y tolerancias, y notifica por correo y Telegram al finalizar.
+          <strong>Sin intervención manual. Sin errores de transcripción.</strong>
+        </p>
+        <p>
+          Construido sobre Node-RED y SQLite, AUDIRE SCADA funciona en un miniPC Windows conectado a la red de
+          planta. No requiere Internet. No requiere servidores externos. Todo el conocimiento del proceso queda
+          dentro de la fábrica.
+        </p>
+      </div>
+      <div>
+        <div class="intro-quote">
+          "Un buen proceso no se vigila, se programa."
+          <span>AUDIRE SCADA · FILOSOFÍA DE DISEÑO</span>
+        </div>
+        <div style="margin-top:20px; background:var(--s1); border:1px solid var(--border); border-radius:6px; padding:20px 22px">
+          <div style="font-family:var(--mono);font-size:.62rem;color:var(--amber);letter-spacing:1.5px;margin-bottom:14px">STACK TECNOLÓGICO</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:.82rem;color:var(--muted)">
+            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)">
+              <span>Motor de control</span><span style="color:var(--text)">Node-RED 4.x</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)">
+              <span>Base de datos</span><span style="color:var(--text)">SQLite · nantor.db</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)">
+              <span>Comunicación campo</span><span style="color:var(--text)">Modbus TCP / RTU</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)">
+              <span>Hardware actuadores</span><span style="color:var(--text)">Waveshare ETH Relay</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:6px 0">
+              <span>Interfaz operario</span><span style="color:var(--text)">Web · Chrome / Edge</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 PILLARS -->
+    <div class="pillars">
+      <div class="pillar">
+        <span class="pillar-icon">⚙️</span>
+        <div class="pillar-h">Control por fases F0–F9</div>
+        <p class="pillar-p">Nueve fases de proceso configurables: preparación, carga, reacción, vacío, enfriamiento,
+          inertización y descarga. Cada fase ejecuta hasta 6 subflujos secuenciales con lógica propia.</p>
+      </div>
+      <div class="pillar">
+        <span class="pillar-icon">📋</span>
+        <div class="pillar-h">Recetas Maestras</div>
+        <p class="pillar-p">Define temperatura, presión, tiempos, cargas de reactivo y señalización luminosa por
+          fase. El operario selecciona receta y pulsa START. El sistema ejecuta el proceso de forma autónoma.</p>
+      </div>
+      <div class="pillar">
+        <span class="pillar-icon">📊</span>
+        <div class="pillar-h">Análisis de Batch</div>
+        <p class="pillar-p">Widget ECG en tiempo real con comparativa contra lote de referencia. Análisis cuadrático
+          y trapezoidal por área de desviación. Histórico completo con superposición de hasta 5 lotes.</p>
+      </div>
+      <div class="pillar">
+        <span class="pillar-icon">⚖️</span>
+        <div class="pillar-h">Estaciones de Envasado</div>
+        <p class="pillar-p">Llenado ponderal controlado con auto-stop al alcanzar peso objetivo. QR de bidón,
+          trazabilidad completa por lote y operario, histórico de los 200 últimos envasados.</p>
+      </div>
+      <div class="pillar">
+        <span class="pillar-icon">🔔</span>
+        <div class="pillar-h">Notificaciones y Alarmas</div>
+        <p class="pillar-p">Alertas automáticas por Telegram y correo electrónico al iniciar, en caso de alarma y
+          al finalizar cada lote. Informe PDF generado y enviado automáticamente en F9.</p>
+      </div>
+      <div class="pillar">
+        <span class="pillar-icon">🔐</span>
+        <div class="pillar-h">Control de Accesos RBAC</div>
+        <p class="pillar-p">Cinco roles de usuario: Visor, Operario, Supervisor, Admin y Programador. Audit trail
+          inmutable. Historial de accesos con IP. Bloqueo automático por intentos fallidos.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- MÓDULOS — 6 bloques imagen/texto -->
+  <div class="section" id="modulos">
+    <div class="eyebrow">Módulos del Sistema</div>
+    <h2 class="section-h">Todo el proceso.<br>Una sola plataforma.</h2>
+    <p class="section-p">Desde el arranque del reactor hasta el etiquetado del bidón, AUDIRE SCADA cubre cada etapa
+      del proceso sin depender de aplicaciones externas.</p>
+
+    <!-- Módulo 1 -->
+    <div class="ev-block">
+      <div class="ev-screen">
+        <img src="images/soft1.png" alt="Panel de producción AUDIRE SCADA — control de reactores R1 y R2">
+        <div class="screen-tag">MÓDULO · PRODUCCIÓN</div>
+      </div>
+      <div class="ev-text">
+        <div class="ev-tag">Núcleo Operativo</div>
+        <h3 class="ev-h">Panel de producción R1 / R2</h3>
+        <p class="ev-p">El epicentro de operaciones. El operario supervisa la fase activa, los parámetros en
+          tiempo real y el estado del controlador DHLH. Las decisiones manuales se limitan a confirmar
+          en pantalla — el sistema hace el resto.</p>
+        <ul class="ev-list">
+          <li>START / STOP de lote con selección de Receta Maestra</li>
+          <li>Monitorización en tiempo real de temperatura, presión y peso</li>
+          <li>Control manual de actuadores fuera del ciclo automático</li>
+          <li>Estado visual de pulmones y sensores COMBI integrado</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Módulo 2 -->
+    <div class="ev-block rev">
+      <div class="ev-screen">
+        <img src="images/soft2.png" alt="Editor de Recetas Maestras AUDIRE SCADA">
+        <div class="screen-tag">MÓDULO · RECETAS</div>
+      </div>
+      <div class="ev-text">
+        <div class="ev-tag">Programación de Proceso</div>
+        <h3 class="ev-h">Editor de Recetas Maestras</h3>
+        <p class="ev-p">Sin programación. El supervisor define temperatura de consigna, tiempos máximos,
+          cargas de reactivo por pulmón, velocidad de agitación y señalización luminosa para cada
+          fase y subflujo mediante formulario web.</p>
+        <ul class="ev-list">
+          <li>Hasta 6 subflujos por fase con lógica condicional propia</li>
+          <li>Recetas de simulación para formación sin consumo de reactivos</li>
+          <li>Versiones independientes por reactor — R1 y R2 pueden ejecutar recetas distintas</li>
+          <li>Perfil de temperatura interactivo con gráfico de curva en tiempo real</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Módulo 3 -->
+    <div class="ev-block">
+      <div class="ev-screen">
+        <img src="images/soft3.png" alt="Análisis de batch histórico y widget ECG AUDIRE SCADA">
+        <div class="screen-tag">MÓDULO · BATCH HISTÓRICO</div>
+      </div>
+      <div class="ev-text">
+        <div class="ev-tag">Inteligencia de Proceso</div>
+        <h3 class="ev-h">Análisis ECG y comparativa de lotes</h3>
+        <p class="ev-p">El widget ECG muestra en tiempo real la desviación del lote activo respecto al lote
+          de referencia. Al terminar, el módulo de autopsia permite comparar hasta 5 lotes históricos
+          en el mismo gráfico para detectar derivas de proceso.</p>
+        <ul class="ev-list">
+          <li>Análisis de área trapezoidal — desviación porcentual por fase</li>
+          <li>Bandas de tolerancia configurables por receta (°C, %, kg)</li>
+          <li>Lotes de referencia designados por el supervisor</li>
+          <li>Perfil de temperatura, presión y peso por subflujo</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Módulo 4 -->
+    <div class="ev-block rev">
+      <div class="ev-screen">
+        <img src="images/soft4.png" alt="Sensores Modbus y paneles COMBI AUDIRE SCADA">
+        <div class="screen-tag">MÓDULO · SENSORES</div>
+      </div>
+      <div class="ev-text">
+        <div class="ev-tag">Instrumentación de Campo</div>
+        <h3 class="ev-h">Sensores Modbus y paneles COMBI</h3>
+        <p class="ev-p">Gestión completa de sensores Modbus RTU conectados via gateway RS485-ETH. Detección
+          automática de dispositivos, cambio de Slave ID desde el navegador y diagnóstico de
+          comunicación con indicador de color por antigüedad de lectura.</p>
+        <ul class="ev-list">
+          <li>Compatible con FC03 y FC04 — presión, temperatura, caudal, peso</li>
+          <li>Soporte de registros 16 y 32 bits con factor y calibración</li>
+          <li>Paneles COMBI: agrupación temática de sensores en vista única</li>
+          <li>Cálculos sobre valor adquirido (factor, offset, operaciones)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Módulo 5 -->
+    <div class="ev-block">
+      <div class="ev-screen">
+        <img src="images/soft5.png" alt="Estaciones de envasado ponderal AUDIRE SCADA">
+        <div class="screen-tag">MÓDULO · ENVASADO</div>
+      </div>
+      <div class="ev-text">
+        <div class="ev-tag">Envasado y Trazabilidad</div>
+        <h3 class="ev-h">Estaciones de llenado ponderal</h3>
+        <p class="ev-p">Dos estaciones de envasado independientes con llenado controlado por peso.
+          Auto-stop al alcanzar el objetivo, protección anti-doble llenado y QR de bidón vinculado
+          al lote de origen. Operación optimizada para lectores de código de barras.</p>
+        <ul class="ev-list">
+          <li>Soporte de formatos bidón 25 kg, 50 kg e IBC 1.000 kg</li>
+          <li>Modo serie: mismo lote y formato, cambio de recipiente en segundos</li>
+          <li>Botón de emergencia — cierre inmediato de válvula</li>
+          <li>Histórico de los 200 últimos envasados con operario, peso real y fecha</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Módulo 6 -->
+    <div class="ev-block rev">
+      <div class="ev-screen">
+        <img src="images/soft6.png" alt="Administración, usuarios y licencia AUDIRE SCADA">
+        <div class="screen-tag">MÓDULO · ADMINISTRACIÓN</div>
+      </div>
+      <div class="ev-text">
+        <div class="ev-tag">Gestión y Seguridad</div>
+        <h3 class="ev-h">Control de accesos y administración</h3>
+        <p class="ev-p">Panel de administración completo con gestión de usuarios por roles, historial de
+          acciones auditables, estado de red de gateways Modbus y configuración de parámetros de
+          sistema. La licencia queda vinculada al hardware de la instalación.</p>
+        <ul class="ev-list">
+          <li>5 roles: Visor, Operario, Supervisor, Admin, Programador</li>
+          <li>Audit trail con registro de todas las acciones por usuario, sección y reactor</li>
+          <li>Informes PDF automáticos con firma electrónica y QR de trazabilidad</li>
+          <li>Notificaciones configurables: Telegram y correo electrónico por contacto</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- VS IGNITION -->
+  <div class="section" id="comparativa">
+    <div class="eyebrow">Comparativa de Mercado</div>
+    <h2 class="section-h">AUDIRE SCADA vs. Ignition.<br>Una comparativa honesta.</h2>
+    <p class="section-p">Ignition es una plataforma excelente. No somos competencia directa — somos la alternativa
+      correcta para un perfil de cliente concreto.</p>
+
+    <div class="vs-wrap">
+      <table class="vs-table">
+        <thead>
+          <tr>
+            <th>Criterio</th>
+            <th>AUDIRE SCADA</th>
+            <th>Ignition (Inductive Automation)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Coste de licencia</td>
+            <td><span class="tag-win">VENTAJA</span> Licencia perpetua incluida en el proyecto llave en mano. Sin cuotas anuales.</td>
+            <td>Miles de euros en licencias + módulos adicionales + mantenimiento anual.</td>
+          </tr>
+          <tr>
+            <td>Especialización en batch químico</td>
+            <td><span class="tag-win">VENTAJA</span> Diseñado específicamente para procesos F0–F9 con subflujos, cargas de reactivo y recetas maestras.</td>
+            <td>Plataforma genérica. El módulo de batch requiere ingeniería específica y configuración extensa.</td>
+          </tr>
+          <tr>
+            <td>Curva de aprendizaje</td>
+            <td><span class="tag-win">VENTAJA</span> El técnico de planta configura sensores, actuadores y recetas desde el navegador sin formación especial.</td>
+            <td>Requiere ingenieros certificados en Ignition. Formación oficial obligatoria.</td>
+          </tr>
+          <tr>
+            <td>Trazabilidad y PDF integrados</td>
+            <td><span class="tag-win">VENTAJA</span> Informe PDF automático con QR por lote, firma del operario y notificación por correo de serie.</td>
+            <td>Requiere módulo Reporting adicional y configuración manual de plantillas.</td>
+          </tr>
+          <tr>
+            <td>Tiempo de puesta en marcha</td>
+            <td><span class="tag-win">VENTAJA</span> Planta operativa en semanas. Hardware y software integrados desde fábrica.</td>
+            <td>Proyectos típicamente de 3–12 meses con integradores certificados.</td>
+          </tr>
+          <tr>
+            <td>Redundancia y alta disponibilidad</td>
+            <td><span class="tag-loss">LIMITACIÓN</span> Arquitectura de un único servidor en planta. Sin failover automático nativo.</td>
+            <td>Redundancia de servidor nativa. Gateway redundante. Alta disponibilidad enterprise.</td>
+          </tr>
+          <tr>
+            <td>Escalabilidad multi-planta</td>
+            <td><span class="tag-loss">LIMITACIÓN</span> Una instalación por cliente. Diseñado para una planta dedicada.</td>
+            <td>Gestión de decenas de plantas desde una instancia central.</td>
+          </tr>
+          <tr>
+            <td>Historiador de series temporales</td>
+            <td><span class="tag-loss">LIMITACIÓN</span> SQLite cubre el volumen de una planta química estándar.</td>
+            <td>Historiador industrial nativo. Integración con InfluxDB, bases de datos externas.</td>
+          </tr>
+          <tr>
+            <td>Ecosistema de módulos</td>
+            <td><span class="tag-loss">LIMITACIÓN</span> Funcionalidad construida a medida. Sin módulos de terceros para OEE, MES o ERP.</td>
+            <td>Ecosistema maduro: OEE, MES, conectores ERP, Vision, Perspective, Edge...</td>
+          </tr>
+          <tr>
+            <td>Respaldo y reputación</td>
+            <td><span class="tag-loss">LIMITACIÓN</span> Producto especializado de fabricante europeo pequeño. Menor peso en auditorías enterprise.</td>
+            <td>20+ años de mercado. Miles de instalaciones globales. Referencia en el sector.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="vs-note">
+      <strong style="color:var(--text)">Conclusión:</strong> AUDIRE SCADA gana en coste, especialización y simplicidad para el nicho de fabricación
+      química por lotes en pymes. Ignition gana en robustez, escalabilidad y ecosistema para grandes instalaciones
+      o clientes que necesitan certificaciones enterprise. Son mercados distintos. AUDIRE no necesita ser mejor
+      que Ignition en todo — necesita ser la mejor opción para su cliente objetivo. Es la mejor opción si quiere automatizar sus reactores y planta de química fina.
+    </p>
+  </div>
+
+  <hr class="rule">
+
+  <!-- CTA -->
+  <div class="section">
+    <div class="cta-band">
+      <div class="cta-band-text">
+        <h3>¿Su proceso puede beneficiarse de AUDIRE SCADA?</h3>
+        <p>Envíenos el resumen técnico de su proceso. Nuestros ingenieros evaluarán la viabilidad en 48 horas.
+          Sin compromiso. Sin humo.</p>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a href="index.html#contacto" class="btn-primary">Solicitar Evaluación</a>
+        <a href="index.html#plataforma" class="btn-ghost">Ver instalación real</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2026 Audire SCADA Systems · Propiedad intelectual registrada por el desarrollador</span>
+    <span style="color:var(--dim)">Nantor Resinas, S.L.U. · Zaragoza, ES</span>
+  </footer>
+
+</body>
+</html>
