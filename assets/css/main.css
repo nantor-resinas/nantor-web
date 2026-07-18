@@ -3958,10 +3958,10 @@ input, select, textarea {
 /* Landing */
 
 	body.landing #page-wrapper {
-		background-image: -moz-linear-gradient(top, rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("../../images/24.png");
-		background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("../../images/24.png");
-		background-image: -ms-linear-gradient(top, rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("../../images/24.png");
-		background-image: linear-gradient(top, rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("../../images/24.png");
+		background-image: -moz-linear-gradient(top, rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url("../../images/24.png");
+		background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url("../../images/24.png");
+		background-image: -ms-linear-gradient(top, rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url("../../images/24.png");
+		background-image: linear-gradient(top, rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url("../../images/24.png");
 		background-attachment: fixed;
 		background-position: center center;
 		background-repeat: no-repeat;
@@ -3979,10 +3979,10 @@ input, select, textarea {
 
 	body.is-mobile.landing #banner,
 	body.is-mobile.landing .wrapper.style4 {
-		background-image: -moz-linear-gradient(top, rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("../../images/24.png");
-		background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("../../images/24.png");
-		background-image: -ms-linear-gradient(top, rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("../../images/24.png");
-		background-image: linear-gradient(top, rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("../../images/24.png");
+		background-image: -moz-linear-gradient(top, rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url("../../images/24.png");
+		background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url("../../images/24.png");
+		background-image: -ms-linear-gradient(top, rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url("../../images/24.png");
+		background-image: linear-gradient(top, rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url("../../images/24.png");
 		background-position: center center;
 		background-repeat: no-repeat;
 		background-size: cover;
