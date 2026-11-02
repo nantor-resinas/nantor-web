@@ -1,0 +1,977 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Nantor Resinas SL | Nantor Resinas Térmicas</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" />
+	</noscript>
+	<style>
+		/* 1. Estilo inicial de los iconos mayores */
+		.icon.major {
+			color: #ffcc00 !important;
+			border-color: #ffffff !important;
+		}
+
+		.features .icon:before {
+			color: #ff8c00 !important;
+		}
+
+		/* 2. Botón estilo "Fuego" */
+		.boton-fuego {
+			background-color: #ff4500 !important;
+			color: #ffffff !important;
+			border-color: #ff4500 !important;
+			box-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
+			transition: all 0.3s ease;
+		}
+
+		.boton-fuego:hover {
+			background-color: #ff8c00 !important;
+			box-shadow: 0 0 20px rgba(255, 140, 0, 0.8);
+			transform: scale(1.05);
+		}
+
+		/* 3. Animación de imágenes (Zoom + Fade-in) */
+		.spotlight .image img {
+			width: 100%;
+			transition: transform 15s ease-out, opacity 2s ease-in;
+			transform: scale(0.89);
+			opacity: 0;
+		}
+
+		.spotlight .image.in-view img {
+			transform: scale(1.0);
+			opacity: 1;
+		}
+
+		/* 4. Optimización móvil (Desactivar animaciones para fluidez) */
+		@media screen and (max-width: 736px) {
+			.spotlight .image img {
+				transition: none !important;
+				opacity: 1 !important;
+				transform: scale(1) !important;
+			}
+		}
+
+		.modal {
+			visibility: hidden;
+			opacity: 0;
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background: rgba(0, 0, 0, 0.8);
+			/* Fondo oscuro semitransparente */
+			z-index: 9999;
+			transition: all 0.3s;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.modal:target {
+			/* Esto abre el modal cuando se llama al ID */
+			visibility: visible;
+			opacity: 1;
+		}
+
+		.modal-content {
+			background: #2e3842;
+			/* Color de fondo corporativo */
+			padding: 2em;
+			width: 90%;
+			max-width: 500px;
+			position: relative;
+			border-radius: 8px;
+			border: 1px solid #ff8c00;
+		}
+
+		.close-modal {
+			position: absolute;
+			top: 10px;
+			right: 20px;
+			font-size: 2em;
+			color: #ff8c00;
+			text-decoration: none;
+		}
+
+		.logo-small {
+			width: 150px;
+			/* Ajusta a 60px o 80px según el tamaño de tus iconos */
+			height: 130px;
+			/* Mantenerlo cuadrado */
+			object-fit: contain;
+			/* Asegura que el logo no se deforme aunque sea rectangular */
+			border-radius: 0%;
+			/* Si quieres que sea circular como un icono */
+			/* O si prefieres que sea cuadrado sin bordes redondos, borra la línea de border-radius */
+
+			display: block;
+			margin: 0 auto;
+			/* Esto lo centrará automáticamente */
+			transition: transform 0.3s ease;
+		}
+
+		/* Opcional: efecto al pasar el ratón para que haga juego con el resto de la web */
+		.logo-small:hover {
+			transform: scale(1.1);
+		}
+
+		#cta {
+			background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("images/28.png");
+			background-attachment: fixed;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+
+		/* Estilo para las Tarjetas de Producto (Tienda) */
+		.product-card {
+			background: rgba(255, 255, 255, 0.05);
+			border: 1px solid rgba(255, 140, 0, 0.3);
+			border-radius: 8px;
+			padding: 2em;
+			text-align: center;
+			transition: all 0.3s ease;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+		}
+
+		.product-card:hover {
+			border-color: #ff8c00;
+			box-shadow: 0 0 15px rgba(255, 140, 0, 0.2);
+			transform: translateY(-5px);
+		}
+
+		.product-card h3 {
+			color: #ffcc00 !important;
+			margin-bottom: 0.5em;
+		}
+
+		.price {
+			font-size: 1.5em;
+			font-weight: bold;
+			color: #ffffff;
+			margin: 1em 0;
+		}
+
+		.price small {
+			font-size: 0.6em;
+			color: #aaa;
+		}
+
+		.badge {
+			background: #ff4500;
+			color: white;
+			font-size: 0.7em;
+			padding: 2px 8px;
+			border-radius: 4px;
+			text-transform: uppercase;
+			display: inline-block;
+			margin-bottom: 1em;
+		}
+
+		/* Colores personalizados para las etiquetas de producto - Texto Blanco Forzado */
+		.badge-oro {
+			background-color: #f0d50a !important;
+			/* Dorado */
+			color: #ffffff !important;
+			font-weight: bold;
+		}
+
+		.badge-plata {
+			background-color: #ecd8e4 !important;
+			/* Plateado */
+			color: #ffffff !important;
+			font-weight: bold;
+		}
+
+		.badge-cobre {
+			background-color: #e4692b !important;
+			/* Cobrizo */
+			color: #ffffff !important;
+			font-weight: bold;
+		}
+
+		.badge-verde {
+			background-color: #2e8b57 !important;
+			/* Verde mar */
+			color: #ffffff !important;
+			font-weight: bold;
+		}
+
+		.badge-amarillo {
+			background-color: #f75973 !important;
+			/* Amarillo/Rosa Fuerte */
+			color: #ffffff !important;
+			font-weight: bold;
+		}
+
+		.badge-bio {
+			background-color: #28a745 !important;
+			/* Verde Ecológico */
+			color: #ffffff !important;
+			font-weight: bold;
+		}
+
+		.badge-blue {
+			background-color: #508bf7 !important;
+			/* Azul */
+			color: #ffffff !important;
+			font-weight: bold;
+		}
+
+		.badge-purple {
+			background-color: #b15cb4 !important;
+			/* violeta */
+			color: #ffffff !important;
+			font-weight: bold;
+		}
+
+		/* Ajuste ultra-fino para los iconos de la sección Three */
+		#three .icon.major {
+			width: 2.2em;
+			/* Tamaño reducido del contenedor circular */
+			height: 2.2em;
+			line-height: 2.2em;
+			font-size: 1.1em;
+			/* Tamaño del símbolo */
+			margin-bottom: 0.8em;
+			border-width: 1px;
+			/* Borde más sutil */
+		}
+
+		#three .icon.major:before {
+			font-size: 0.9em;
+			/* Ajuste del glifo interior */
+		}
+
+		/* Ajuste de los títulos para mayor limpieza visual */
+		#three h3 {
+			font-size: 1.05em;
+			letter-spacing: 0.05em;
+			margin-top: 0.2em;
+		}
+
+		/* Sección Excelencia Operativa - Estilo Industrial */
+		#four {
+			background-color: #4b9caa;
+			/* Un tono ligeramente distinto al resto de la web */
+			border-top: 2px solid #306997;
+			/* Borde superior azul acero */
+			border-bottom: 2px solid #38719f;
+		}
+
+		#four h2 {
+			color: #ffffff !important;
+		}
+
+		/* Iconos de la sección Four en azul acero */
+		#four .features .icon:before {
+			color: #e5a166 !important;
+			/* Azul acero para los iconos */
+		}
+
+		/* Títulos de las tarjetas en la sección Four */
+		#four .features h3 {
+			color: #e0e0e0 !important;
+		}
+
+		/* Ocultar la tienda inicialmente */
+		#tienda {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: #2e3842;
+			/* Fondo corporativo */
+			z-index: 10000;
+			overflow-y: auto;
+			padding: 4em 0;
+		}
+
+		/* Mostrar cuando se hace clic en el enlace del menú */
+		#tienda:target {
+			display: block;
+		}
+
+		/* Contenedor del efecto */
+		.rayo-polimerizacion {
+			position: relative;
+			display: inline-block;
+			overflow: hidden;
+		}
+
+		/* El "Rayo" de polimerización */
+		.rayo-polimerizacion::after {
+			content: '';
+			position: absolute;
+
+			/* Posición del punto (puedes ajustar top/left para moverlo sobre la pieza) */
+			top: 44%;
+			left: 56%;
+			transform: translate(-50%, -50%) scale(0);
+
+			/* Tamaño y forma */
+			width: 10px;
+			height: 10px;
+			background: rgba(0, 150, 255, 0.8);
+			/* Azul cian */
+			border-radius: 50%;
+
+			/* Brillo (Glow) */
+			box-shadow: 0 0 120px 10px rgba(0, 200, 255, 0.6),
+				0 0 80px 20px rgba(0, 100, 255, 0.3);
+
+			/* Configuración de animación */
+			opacity: 0;
+			transition: opacity 7s ease-in, transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			z-index: 10;
+			pointer-events: none;
+			/* Para que no interfiera con clics */
+		}
+
+		/* Activación cuando la imagen entra en vista (usando tu JS actual) */
+		.rayo-polimerizacion.in-view::after {
+			opacity: 1;
+			transform: translate(-50%, -50%) scale(1);
+			animation: pulsoRayo 2s infinite ease-in-out 1s;
+			/* Empieza después de 1s */
+		}
+
+		/* Animación de pulsación para simular la energía del rayo */
+		@keyframes pulsoRayo {
+
+			0%,
+			100% {
+				box-shadow: 0 0 20px 10px rgba(0, 200, 255, 0.6), 0 0 40px 20px rgba(0, 100, 255, 0.3);
+				background: rgba(66, 120, 228, 0.8);
+			}
+
+			50% {
+				box-shadow: 0 0 35px 15px rgba(0, 255, 255, 0.8), 0 0 60px 30px rgba(0, 150, 255, 0.4);
+				background: rgba(100, 220, 255, 1);
+			}
+		}
+	</style>
+	<link rel="icon" type="image/ico" href="images/nantor.ico">
+	<link rel="canonical" href="https://www.nantor.es/" />
+	<meta name="description"
+		content="Nantor Resinas S.L.U. Fabricación de resinas epoxi e industriales y bio-basadas. Expertos en ingeniería química de alto rendimiento Ambarite en Zaragoza.">
+	<meta name="keywords"
+		content="Nantor, Resinas Térmicas, HT-200, resina termoresistente, resina médica, resina termopolimerizable UV, Ambarite, NIPU, UV Ortho, UV Thermal, UV Color, Química Fina, Ingeniería Química, Zaragoza, Miraflores, Resina Fotopolimerizable">
+	<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "Resina Ambarite NIPU, Ambarite UV Thermal, Ambarite UV Ortho, Ambarite UV Color, resina Fotopolimerizable, resina industrial, resina técnica, resina bio",
+  "image": "https://nantor.es/images/nantor.ico",
+  "description": "Resinas de alto rendimiento e innovaciones bio-basadas para aplicaciones industriales de química fina.",
+  "brand": {
+    "@type": "Brand",
+    "name": "Nantor"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "bestRating": "5",
+    "worstRating": "1",
+    "ratingCount": "24"
+  }
+}
+</script>
+</head>
+
+<body class="landing is-preload">
+
+	<!-- Page Wrapper -->
+	<div id="page-wrapper">
+
+		<!-- Header -->
+		<header id="header" class="alt">
+			<h1><a href="index.html">home</a></h1>
+			<nav id="nav">
+				<ul>
+					<li class="special">
+						<a href="#menu" class="menuToggle"><span>Menu</span></a>
+						<div id="menu">
+
+							<ul>
+								<li><a href="index.html">
+										<div style="text-align: center; margin-bottom: 2em;">
+											<img src="images/logo.png" alt="Nantor Resinas SLU"
+												style="width: 280px; height: auto; display: inline-block;">
+										</div>Home (PDF)
+									</a></li>
+
+								<li><a href="doc/Ambarite_NIPU.pdf" target="_blank"
+										rel="noopener noreferrer">&nbsp;&nbsp;&nbsp;&nbsp;Ambarite Aglutinante</a></li>
+								<li><a href="doc/Ambarite_NIPU_Electro.pdf" target="_blank"
+										rel="noopener noreferrer">&nbsp;&nbsp;&nbsp;&nbsp;Ambarite Electro</a></li>
+								<li><a href="doc/korindorite.pdf" target="_blank"
+										rel="noopener noreferrer">&nbsp;&nbsp;&nbsp;&nbsp;Korindorite</a></li>
+								<li><a href="doc/ZafiriteC6.pdf" target="_blank"
+										rel="noopener noreferrer">&nbsp;&nbsp;&nbsp;&nbsp;Zafirite C6</a></li>
+								<li><a href="doc/Ambarite_UV_Thermal.pdf" target="_blank"
+										rel="noopener noreferrer">&nbsp;&nbsp;&nbsp;&nbsp;Ambarite UV Thermal</a></li>
+								<li><a href="doc/Ambarite_UV_Color.pdf" target="_blank"
+										rel="noopener noreferrer">&nbsp;&nbsp;&nbsp;&nbsp;Amabarite UV Color</a></li>
+								<li><a href="doc/Ambarite_UV_Medical.pdf" target="_blank"
+										rel="noopener noreferrer">&nbsp;&nbsp;&nbsp;&nbsp;Ambarite UV Medical</a></li>
+								<li><a href="#tienda">Tienda Online</a></li>
+								<li><a href="#contacto-modal">Contactar</a></li>
+							</ul </div>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<!-- Banner -->
+		<section id="banner">
+			<div class="inner">
+				<h2>NANTOR RESINAS</h2>
+				<p>Química fina de Poliuretano de bajo monómero, Sin formación obligatoria REACH</p>
+			</div>
+			<a href="#one" class="more scrolly">Saber más</a>
+		</section>
+
+		<!-- One -->
+		<section id="one" class="wrapper style1 special">
+			<div class="inner">
+				<header class="major">
+					<h2>Nosotros</h2>
+					<p>Somos fabricantes de Poliuretano de bajo monómero: <0,1 % de diisocianato libre (Sin formación obligatoria REACH) en nuestra planta de Zaragoza, España. Cumple la restricción del Anexo XVII (entrada 74)
+					</p>
+				</header>
+				<ul class="icons major">
+
+					<li style="padding: 0 1.5em;">
+						<span class="icon solid fa-cogs major"
+							style="font-size: 2.5rem; margin-bottom: 0.5em;"><span class="label">Adhesión</span></span>
+						<p><strong>Adhesión</strong></p>
+					</li>
+
+					<li style="padding: 0 1.5em;">
+						<span class="icon solid fa-leaf major"
+							style="font-size: 2.5rem; margin-bottom: 0.5em;"><span
+								class="label">No isocianatos</span></span>
+						<p><strong>No isocianatos</strong></p>
+					</li>
+
+					<li style="padding: 0 1.5em;">
+						<span class="icon solid fa-fire major style2"
+							style="font-size: 2.5rem; margin-bottom: 0.5em;"><span class="label">Térmica</span></span>
+						<p><strong>Térmica</strong></p>
+					</li>
+
+					<li style="padding: 0 1.5em;">
+						<span class="icon solid fa-dna major style3"
+							style="font-size: 2.5rem; margin-bottom: 0.5em;"><span
+								class="label">Bio-compatible</span></span>
+						<p><strong>Bio-Compatible</strong></p>
+					</li>
+
+					<li style="padding: 0 1.5em;">
+						<span class="icon solid fa-link major style1"
+							style="font-size: 2.5rem; margin-bottom: 0.5em;"><span class="label">Fuerza Plus</span></span>
+						<p><strong>Fuerza Plus</strong></p>
+					</li>
+				</ul>
+				<ul class="actions special">
+					<li><a href="#two" class="button primary boton-fuego scrolly">Explorar Catálogo</a></li>
+				</ul>
+			</div>
+		</section>
+
+		<!-- Two -->
+		<header class="major">
+			<section id="two" class="wrapper alt style2">
+
+				<!-- Ambarite NIPU -->
+				<section class="spotlight">
+					<div class="image"><img src="images/resina1.png" alt="Ambarite NIPU" /></div>
+					<div class="content">
+						<h2>Ambarite™ NIPU</h2>
+						<blockquote>"Dureza industrial, pisada segura. El primer suelo de poliuretano sin isocianatos ni
+							venenos. Cuida el ambiente y a las personas."</blockquote>
+						<p><strong>Aglutinante para Stone Carpet sin isocianatos. </strong> Pavimento elástico, fuerte,
+							tenaz y 100% ecológicoque protege la salud. Contracción menor al 0.1%. Pavimento continuo autonivelante
+							bio-basado que tenaz frente al desgaste mecánico y químico en áreas de tráfico pesado,
+							garantizando una aplicación completamente libre de emisiones tóxicas.</p>
+					</div>
+				</section>
+
+				<!-- Ambarite NIPU Electro -->
+				<section class="spotlight">
+					<div class="image"><img src="images/3.png" alt="Ambarite NIPU Electro" /></div>
+					<div class="content">
+						<h2>Ambarite NIPU Electro</h2>
+						<blockquote>"Encapsulado electrónico sin isocianatos: máxima protección, transparencia y
+							seguridad laboral."
+						</blockquote>
+						<p>El encapsulado de nueva generación para electrónica e iluminación LED, 0% isocianatos y
+							COVs. Garantiza aislamiento dieléctrico superior, transparencia UV y curado sin burbujas.
+							Protege placas PCB, sensores y luminarias frente a humedad, choque térmico y vibraciones, genera suelos ATEX con
+							un perfil eco-friendly y máxima seguridad laboral.</p>
+					</div>
+				</section>
+
+				<!-- Korimdorite -->
+				<section class="spotlight">
+					<div class="image"><img src="images/korindorite_aisla.png" alt="Korindorite" /></div>
+					<div class="content">
+						<h2>Korindorite</h2>
+						<blockquote>"tecnología de matriz de alúmina/zafiro, ignifuga de ultra-alto rendimiento."
+						</blockquote>
+						<p>Aprovecha la dureza mineral Mohs 9, en
+							una estructura bio-polimérica libre de isocianatos, con la resistencia al desgaste de la
+							piedra preciosa y la tenacidad mecánica del polímero de alta ingeniería. Matriz biobasada
+							ideal para aislamiento dieléctrico
+							superior, para Transformadores de potencia, Aisladores de Alta Tensión, reparaciones mecánicas, 
+							Componentes para eólica marina, Zapatas de freno
+							de ferrocarril y Proyectiles Perforantes, etc </p>
+					</div>
+				</section>
+
+				<!-- Zafirite C6 -->
+				<section class="spotlight">
+					<div class="image"><img src="images/zafirite.png" alt="Zafirite C6" /></div>
+					<div class="content">
+						<h2>Zafirite C6</h2>
+						<blockquote>"Matriz Polihidroxiuretano (NIPU) reforzada con Alúmina/zafiro y Carbono Reticular (C6) de dureza estructural, fricción cero y resistencia
+							intrínseca al fuego."
+						</blockquote>
+						<p>Es el polímero estructural moldeable 2K definitivo que supera al metal en entornos de desgaste extremo.
+							Con la dureza del corindón/zafiro y la autolubricación y disipación térmica del grafito.
+							Tribología, Piezas indestructibles fabricadas por moldeo, libres de isocianatos. 
+							Ideal para rodamientos autolubricados, componentes mecánicos
+							de alta fricción, soldadura en frío y fabricación de bujes, casquillos y rodetes.</p>
+					</div>
+				</section>
+
+				<!-- Ambarite UV Color -->
+				<section class="spotlight">
+					<div class="image"><img src="images/31.png" alt="Ambarite UV Color" /></div>
+					<div class="content">
+						<h2>Ambarite™ UV Color / Thermal</h2>
+						<blockquote>"Color vibrante, olor cero. La resina de ingeniería tan pura que puedes tocar y
+							sentir sin límites. Imprime y fotopolimeriza, con seguridad utensilios íntimos capaces de
+							soportar hasta 200
+							°C."
+						</blockquote>
+						<p>Curado ultra-rápido, máxima dureza (82-85 Shore D) y estabilidad cromática sin
+							sedimentación.<strong>completamente
+								libre de compuestos tóxicos y COVs</strong>, haciéndola idónea para objetos destinados
+							al contacto directo y continuo con la piel y las mucosas. protegiendo activamente las
+							pantallas LCD y el hardware de
+							impresión. Ideal para moldes de inyección piloto y componentes funcionales.
+						</p>
+					</div>
+				</section>
+
+				<!-- Ambarite UV Ortho -->
+				<section class="spotlight">
+					<div class="image"><img src="images/columna.png" alt="Ambarite UV Medical" /></div>
+					<div class="content">
+						<h2>Ambarite™ UV Medical</h2>
+						<blockquote>"Precisión quirúrgica sin disruptores endocrinos. Imprime y fotopolimeriza partes
+							sólidas humanas biocompatibles"
+						</blockquote>
+						<p>Diseñada para Cirugía Ortopédica y Reconstructiva y Odontología.
+							Esterilizable a 134ºC (Ciclo Serie B).
+							<strong>Consigue una máxima fidelidad micrométrica</strong> con base bio libre
+							de lixiviación (Sin Bisfenol A ni ftalatos), sin disruptores endocrinos ni
+							compuestos tóxicos oncogénicos. <strong>Contracción
+								volumétrica de apenas 0,2%. ¿Será el nexo de la interfaz hombre-máquina?.
+						</p>
+					</div>
+				</section>
+			</section>
+
+			<!-- Three -->
+			<section id="three" class="wrapper style3 special">
+				<div class="inner">
+					<header class="major">
+						<h2>Gama de Resinas de Química Fina Ambarite™</h2>
+						<p>Con nuestro proceso patentado de síntesis bio-basada (vía Sweet Nantor™) se sustituyen las
+							agresivas y contaminantes materias primas fósiles por
+							ingredientes naturales como la matriz Ambrite Base Matriz. <br /> El resultado es una
+							gama biocompatible por naturaleza, completamente libre de bisfenoles,
+							disruptores endocrinos, cancerígenos y olores nocivos. <br />Es alta ingeniería que cuida de
+							las personas, la naturaleza y de tu impresora.</p>
+					</header>
+
+					<div class="row gtr-uniform">
+
+						<div class="col-6 col-12-medium">
+							<span class="icon solid fa-leaf major" style="margin-right: 15px;"></span>
+							<h3>Ambarite™ NIPU</h3>
+							<p>Matriz aglutinante de Suelo de poliuretano industrial bio-basado 100% libre de
+								isocianatos y emisiones
+								cancerígenas. Resistente a exterior que no amarillea</p>
+						</div>
+						<div class="col-6 col-12-medium">
+							<span class="icon solid fa-bolt major" style="margin-right: 15px;"></span>
+							<h3>Ambarite™ NIPU ELECTRO</h3>
+							<p>Encapsulado de Polímero industrial moldeable de extrema pureza y estabilidad, libre de
+								isocianatos para electrónica y luminarias LED. Cero higroscopía y máxima transparencia
+								UV.
+							</p>
+						</div>
+						<div class="col-6 col-12-medium">
+							<span class="icon solid fa-shield-alt major" style="margin-right: 15px;"></span>
+							<h3>Korindorite™</h3>
+							<p>Zafiro moldeable, ideal para Aisladores eléctricos para Alta Tensión que exigen extrema
+								resistencia y dureza. 2K
+								para piezas de ingeniería de alto rendimiento.
+							</p>
+						</div>
+						<div class="col-6 col-12-medium">
+							<span class="icon solid fa-cogs major" style="margin-right: 15px;"></span>
+							<h3>Zafirite C6™</h3>
+							<p>Piezas indestructibles autolubricantes, mecánicas sin fricción
+								y 100% libre de isocianatos. 2k por moldeo, resistente al fuego.
+							</p>
+						</div>
+						<div class="col-6 col-12-medium">
+							<span class="icon solid fa-palette major" style="margin-right: 15px;"></span>
+							<h3>Ambarite™ UV Color / Thermal</h3>
+							<p>Resina de ingeniería pura con pigmentación ultra-estable y segura para contacto humano
+								íntimo. de alta estabilidad térmica (hasta 200 °C) libre de vapores
+								corrosivos.</p>
+						</div>
+						<div class="col-6 col-12-medium">
+							<span class="icon solid fa-heartbeat major" style="margin-right: 15px;"></span>
+							<h3>Ambarite™ UV Medical</h3>
+							<p>Resina de grado médico de alta precisión para cirugía. Con Ambarite Base sin disruptores
+								endocrinos ni canceríegenos. Bio-compatible</p>
+						</div>
+					</div>
+			</section>
+
+			<!-- Four -->
+			<section id="four" class="wrapper style3 special">
+				<div class="inner">
+					<header class="major">
+						<h2>Excelencia Operativa</h2>
+					</header>
+					<ul class="features">
+						<li class="icon solid fa-industry">
+							<h3>Implantación Industrial:</h3>
+							<p>Ejecución de una línea base de producción mediante tecnología batch modular, diseñada
+								para permitir una escalabilidad eficiente mediante la adición de reactores en paralelo.
+							</p>
+						</li>
+
+						<li class="icon solid fa-flask">
+							<h3>Innovación y Calidad:</h3>
+							<p>Aseguramiento de la repetibilidad de lote y optimización de formulaciones mediante un
+								laboratorio de I+D equipado con calorimetría (DSC/TGA) y control analítico de alta
+								precisión.</p>
+						</li>
+
+						<li class="icon solid fa-microchip">
+							<h3>Digitalización: </h3>
+							<p>Implementación de un sistema PLC/SCADA que garantiza la trazabilidad total mediante
+								registro electrónico de lotes, cumpliendo con estándares de integridad de datos.</p>
+						</li>
+
+						<li class="icon solid fa-shield-alt">
+							<h3>Alcance Técnico y Seguridad:</h3>
+							<p>Diseño robusto bajo normativa ATEX para la gestión de atmósferas explosivas y VOCs,
+								respaldado por una ingeniería de seguridad avanzada.</p>
+						</li>
+
+						<li class="icon solid fa-exclamation-triangle">
+							<h3>Estrategia de Seguridad: </h3>
+							<p>Sistemas instrumentados de seguridad (SIS) con interbloqueos, parada de emergencia (ESD)
+								mediante inyección de inhibidor y análisis HAZOP preventivo.</p>
+						</li>
+
+						<li class="icon solid fa-leaf">
+							<h3>Compromiso Ambiental</h3>
+							<p>Sostenibilidad mediante integración térmica, monitorización energética (kWh/batch) y
+								sistemas avanzados de tratamiento de emisiones.</p>
+						</li>
+					</ul>
+				</div>
+			</section>
+
+	</div>
+
+	</div>
+	</section>
+
+	<!-- Tienda Online -->
+	<section id="tienda" class="wrapper style2 special">
+		<a href="#"
+			style="position: absolute; top: 20px; right: 20px; font-size: 2em; color: #ff8c00; text-decoration: none;">&times;</a>
+		<div class="inner">
+			<header class="major">
+				<h2>Punto de Venta Directo</h2>
+				<p><img src="images/logo_blanco.png" alt="Nantor Resinas SLU"
+						style="width: 200px; height: auto; display: inline-block;"></p>
+				<p>PROXIMAMENTE...</p>
+			</header>
+			<div class="row gtr-uniform">
+				<!-- Ambarite NIPU -->
+				<div class="col-4 col-12-medium">
+					<div class="product-card" style="border: 1px solid #28a745;">
+						<div>
+							<span class="badge badge-bio">Ambarite™ NIPU</span>
+							<h3>Ambarite™ NIPU</h3>
+							<p>Pavimento de poliuretano bio-basado autonivelante libre de isocianatos. Tráfico
+								pesado.</p>
+						</div>
+						<div>
+							<div class="price">495€ <small>+ IVA</small></div>
+							<ul class="actions special">
+								<li><a href="#" class="button primary boton-fuego fit">Comprar Kit 20kg</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- Ambarite NIPU Electro -->
+				<div class="col-4 col-12-medium">
+					<div class="product-card" style="border: 1px solid #28a745;">
+						<div>
+							<span class="badge badge-bio">Ambarite NIPU ELECTRO</span>
+							<h3>Ambarite NIPU Electro</h3>
+							<p>Encapsulado electrónico sin isocianatos.</p>
+						</div>
+						<div>
+							<div class="price">350€ <small>+ IVA</small></div>
+							<ul class="actions special">
+								<li><a href="#" class="button primary boton-fuego fit">Comprar Kit 5KG</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- Korindorite -->
+				<div class="col-4 col-12-medium">
+					<div class="product-card" style="border: 1px solid #284aa7;">
+						<div>
+							<span class="badge badge-blue">Korindorite 2K</span>
+							<h3>Korindorite 2K</h3>
+							<p>Resina "Acero líquido" moldeable en 2 componentes</p>
+						</div>
+						<div>
+							<div class="price">950€ <small>+ IVA</small></div>
+							<ul class="actions special">
+								<li><a href="#" class="button primary boton-fuego fit">Comprar Kit 5KG</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- Zafirite C6-->
+				<div class="col-4 col-12-medium">
+					<div class="product-card" style="border: 1px solid #b15cb4 ;">
+						<div>
+							<span class="badge badge-purple">Zafirite C6 2K</span>
+							<h3>Zafirite C6 2K</h3>
+							<p>Resina "Acero líquido autolubricante" moldeable sin isocianatos.</p>
+						</div>
+						<div>
+							<div class="price">1600€ <small>+ IVA</small></div>
+							<ul class="actions special">
+								<li><a href="#" class="button primary boton-fuego fit">Comprar Kit 5KG</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- Ambarite UV Thermal -->
+				<div class="col-4 col-12-medium">
+					<div class="product-card" style="border: 1px solid #ff8c00;">
+						<div>
+							<span class="badge badge-cobre">Ambarite™ UV Thermal</span>
+							<h3>UV Thermal</h3>
+							<p>Fotopolímero estructural de alta resistencia térmica (200 °C) para moldes y
+								utillajes.</p>
+						</div>
+						<div>
+							<div class="price">920€ <small>+ IVA</small></div>
+							<ul class="actions special">
+								<li><a href="#" class="button primary fit">Comprar Kit (0.5kg)</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- Ambarite UV Medical -->
+				<div class="col-4 col-12-medium">
+					<div class="product-card" style="border: 1px solid #f75973;">
+						<div>
+							<span class="badge badge-amarillo">Ambarite™ UV Medical</span>
+							<h3>UV Medical</h3>
+							<p>Resina de grado médico. Máxima precisión sin lixiviación de bisfenoles ni
+								disruptores.</p>
+						</div>
+						<div>
+							<div class="price">25000€ <small>+ IVA</small></div>
+							<ul class="actions special">
+								<li><a href="#" class="button primary fit">Comprar Kit (0.5kg)</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- Ambarite UV Color -->
+				<div class="col-4 col-12-medium">
+					<div class="product-card" style="border: 1px solid #faf88c;">
+						<div>
+							<span class="badge badge-oro">Ambarite™ UV Color</span>
+							<h3>UV Color</h3>
+							<p>Fotopolímero bio-basado hipoalergénico una vez curado, apto para contacto cutáneo y
+								mucoso.</p>
+						</div>
+						<div>
+							<div class="price">490,00€ <small>+ IVA</small></div>
+							<ul class="actions special">
+								<li><a href="#" class="button primary fit">Comprar Kit (1kg)</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<p style="margin-top: 2em; font-size: 0.8em; opacity: 0.7;">
+				* Precios para la recogida en Planta Nave 4, P.I. Miraflores, Zaragoza. Para envíos logísticos
+				paletizados,
+				consulte tarifas en el checkout.
+			</p>
+		</div>
+	</section>
+
+	<!-- CTA -->
+	<section id="cta" class="wrapper style4">
+		<div class="inner">
+			<header>
+				<h2>NANTOR RESINAS</h2>
+				<p>Química fina Bio-Compatible</p>
+			</header>
+			<ul class="actions stacked">
+				<li><a href="doc/Resumen_Ejecutivo_Proyecto_Nantor_HT-200.pdf" class="button fit" target="_blank"
+						rel="noopener noreferrer">Resumen Ejecutivo</a></li>
+			</ul>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer id="footer">
+		<div class="inner">
+			<ul class="icons">
+				<li><a href="#contacto-modal" class="button primary boton-fuego">contactar</a></li>
+			</ul>
+
+			<ul class="copyright">
+				<li>&copy; 2026 Nantor Resinas SLU.</li>
+				<li>Pol. Emp. Miraflores, Nave 4. (Cartuja Baja) 50720 Zaragoza, España</li>
+				<li><a href="https://maps.app.goo.gl/CH74M4HSnuAFGJJ1A" target="_blank" rel="noopener noreferrer">¿cómo
+						llegar?</a></li>
+			</ul>
+
+		</div>
+		<div id="contacto-modal" class="modal">
+			<div class="modal-content">
+				<a href="#" class="close-modal" onclick="resetModal()">&times;</a>
+
+				<div id="form-container">
+					<h3>Contacto</h3>
+					<form id="contacto-form" method="POST" action="https://formspree.io/f/xdawdbne">
+						<input type="text" name="name" placeholder="Nombre completo" required
+							style="margin-bottom: 10px;" />
+						<input type="email" name="email" placeholder="Correo electrónico" required
+							style="margin-bottom: 10px;" />
+						<input type="text" name="telefono" placeholder="(código) teléfono" required
+							style="margin-bottom: 10px;" />
+						<textarea name="message" placeholder="Mensaje" rows="4" style="margin-bottom: 10px;"></textarea>
+						<input type="submit" value="Enviar Mensaje" class="primary fit" />
+
+					</form>
+					<ul class="copyright">
+						<li>Nantor Resinas S.L.U<br />
+							Polígono Empresarial Miraflores, Nave 4. Zaragoza 50720, España</li>
+						<li><a href="https://maps.app.goo.gl/CH74M4HSnuAFGJJ1A" target="_blank"
+								rel="noopener noreferrer">¿cómo llegar?</a></li>
+					</ul>
+				</div>
+				<p>info@nantor.es</p>
+				<div id="success-message" style="display: none; text-align: center; padding: 20px;">
+					<h3>¡Gracias por su interés!</h3>
+					<p>Hemos recibido su consulta sobre <strong>Nantor Resinas SLU</strong>. Nuestro equipo se
+						pondrá en contacto con usted en breve.</p>
+					<a href="#" class="button primary fit" onclick="resetModal()">Cerrar</a>
+				</div>
+			</div>
+		</div>
+
+	</footer>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script>
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('in-view');
+				}
+			});
+		}, { threshold: 0.5 }); // Se dispara cuando el 50% de la imagen es visible
+
+		document.querySelectorAll('.spotlight .image').forEach(img => {
+			observer.observe(img);
+		});
+	</script>
+	<script>
+		const form = document.getElementById('contacto-form');
+		const formContainer = document.getElementById('form-container');
+		const successMessage = document.getElementById('success-message');
+
+		form.addEventListener('submit', function (event) {
+			event.preventDefault(); // Evita que la página salte
+
+			// Enviamos los datos a Formspree usando fetch
+			fetch(form.action, {
+				method: 'POST',
+				body: new FormData(form),
+				headers: { 'Accept': 'application/json' }
+			}).then(() => {
+				// Ocultamos formulario, mostramos mensaje de éxito
+				formContainer.style.display = 'none';
+				successMessage.style.display = 'block';
+			});
+		});
+
+		function resetModal() {
+			// Reinicia el modal para la próxima vez
+			formContainer.style.display = 'block';
+			successMessage.style.display = 'none';
+			form.reset();
+			window.location.hash = ''; // Cierra el modal
+		}
+	</script>
+
+</body>
+
+</html>
